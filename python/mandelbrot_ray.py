@@ -4,7 +4,7 @@ import numpy as np
 import ray
 from PIL import Image
 
-IMGPATH = r'tst.jpg'
+IMGPATH = r'mandelbrot.jpg'
 
 
 @ray.remote
