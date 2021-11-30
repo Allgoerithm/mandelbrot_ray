@@ -4,7 +4,7 @@ import numpy as np
 import ray
 from PIL import Image
 
-IMGPATH = r'/mnt/c/Users/michael.allgoewer/OneDrive - b.telligent/tst.jpg'
+IMGPATH = r'tst.jpg'
 
 
 @ray.remote
@@ -53,6 +53,7 @@ def start_px(width_px: int, no_workers: int, worker_index: int) -> int:
     (factor, remainder) = np.divmod(width_px, no_workers)
     return worker_index*factor + min(worker_index, remainder)
 
+
 @ray.remote
 def mandelbrot_parallel(width_px: int, height_px: int, location_re: np.float128, location_im: np.float128,
                         zoom_level: np.float128, max_iterations: int, no_slices: int) -> np.ndarray:
@@ -76,6 +77,7 @@ if __name__ == '__main__':
                                                      location_im=location_im, zoom_level=100, max_iterations=400,
                                                      no_slices=450))
     print(f'execution with Ray: {time.time() - start:.1f} seconds.')
+    ray.shutdown()
     img = Image.fromarray(obj=img_asarray.transpose(1, 0, 2), mode='HSV').convert(mode='RGB', colors=32768)
     img.save(IMGPATH)
 
