@@ -54,13 +54,12 @@ def start_px(width_px: int, no_workers: int, worker_index: int) -> int:
 
 def mandelbrot_parallel(width_px: int, height_px: int, location_re: np.float128, location_im: np.float128,
                         zoom_level: np.float128, max_iterations: int, no_slices: int) -> np.ndarray:
-    mandelbrot_preconf = partial(mandelbrot.remote, width_px=width_px, height_px=height_px, location_re=location_re,
+    mandelbrot_preconf = partial(mandelbrot, width_px=width_px, height_px=height_px, location_re=location_re,
                                  location_im=location_im, zoom_level=zoom_level, max_iterations=max_iterations)
     slices_start = [start_px(width_px=width_px, no_workers=no_slices, worker_index=i) for i in range(no_slices + 1)]
 
-    workload = [mandelbrot_preconf(width_px_min=slices_start[i], width_px_max=slices_start[i + 1])
-                for i in range(no_slices)]
-    results = ray.get(workload)
+    results = [mandelbrot_preconf(width_px_min=slices_start[i], width_px_max=slices_start[i + 1])
+               for i in range(no_slices)]
     return np.concatenate(results, axis=0)
 
 
@@ -68,9 +67,9 @@ if __name__ == '__main__':
     location_re = -0.743643887037158704752191506114774
     location_im = 0.131825904205311970493132056385139
     start = time.time()
-    img_asarray = ray.get(mandelbrot_parallel.remote(width_px=900, height_px=600, location_re=location_re,
-                                                     location_im=location_im, zoom_level=100, max_iterations=400,
-                                                     no_slices=450))
+    img_asarray = mandelbrot_parallel(width_px=900, height_px=600, location_re=location_re,
+                                      location_im=location_im, zoom_level=100, max_iterations=400,
+                                      no_slices=450)
     print(f'execution without Ray: {time.time() - start:.1f} seconds.')
     img = Image.fromarray(obj=img_asarray.transpose(1, 0, 2), mode='HSV').convert(mode='RGB', colors=32768)
     img.save(IMGPATH)
