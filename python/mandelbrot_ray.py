@@ -68,7 +68,6 @@ def mandelbrot_parallel(width_px: int, height_px: int, location_re: np.float128,
 
 
 if __name__ == '__main__':
-    num_cpus = 8
     ray.init(address='auto')
     location_re = -0.743643887037158704752191506114774
     location_im = 0.131825904205311970493132056385139
