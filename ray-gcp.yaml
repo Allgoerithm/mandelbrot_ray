@@ -77,7 +77,6 @@ available_node_types:
             networkInterfaces:
               - kind: compute#networkInterface
                 subnetwork: projects/bt-pp-dsc-1th4/regions/europe-west1/subnetworks/ray-subnet-europe-west1
-                natIP: ~
             # Additional options can be found in in the compute docs at
             # https://cloud.google.com/compute/docs/reference/rest/v1/instances/insert
 
@@ -115,7 +114,6 @@ available_node_types:
             networkInterfaces:
               - kind: compute#networkInterface
                 subnetwork: projects/bt-pp-dsc-1th4/regions/europe-west1/subnetworks/ray-subnet-europe-west1
-                natIP: ~
             # Run workers on preemtible instance by default.
             # Comment this out to use on-demand.
             scheduling:
