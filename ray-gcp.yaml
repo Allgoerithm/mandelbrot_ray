@@ -41,7 +41,7 @@ provider:
     type: gcp
     region: europe-west1    # Belgium
     availability_zone: europe-west1-b
-    project_id: bt-pp-dsc-1th4  # Globally unique project id
+    project_id: <your-project-id>  # Globally unique project id
     use_internal_ips: true  # We want the cluster to use internal IPs only
 
 # How Ray will authenticate with newly launched nodes.
